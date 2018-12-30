@@ -6,8 +6,8 @@ import requests
 
 steam_ids = sys.argv[1:]
 
-script_name = "short.txt"
-delay = 3
+script_name = "script.txt"
+delay = 15
 
 session_id = ""
 login_secure = ""
