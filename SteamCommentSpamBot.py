@@ -38,7 +38,6 @@ class Thread(threading.Thread):
     def __init__(self, account_id):
         threading.Thread.__init__(self)
         self.stop = False
-        self.done = False
         self.id = account_id
         self.headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0"}
         self.cookies = {"steamLoginSecure": login_secure,
@@ -58,18 +57,18 @@ class Thread(threading.Thread):
                     print(f"Account {self.id} either doesn't allow posting or your entered information is incorrect")
                     print(f"Skipping {self.id}")
                     print(r.json())
-                    self.stop = False
+                    self.stop = True
                     return
-                print(f"Something went wrong with {self.id}'s profile :-(")
-                print("Make sure all your entered info is correct and the delay long enough")
-                print(f"Retrying comment {self.i + 1}")
-                print(r.json())
-                self.i -= 1
+                else:
+                    print(f"Something went wrong with {self.id}'s profile :-(")
+                    print("Make sure all your entered info is correct and the delay long enough")
+                    print(f"Retrying comment {self.i + 1}")
+                    print(r.json())
+                    self.i -= 1
             else:
                 print(f"{self.i + 1}/{len(script)} on {self.id}'s profile")
 
             time.sleep(delay)
-        print()
         self.stop = True
 
 
@@ -84,7 +83,7 @@ try:
     while not all(t.stop for t in thread_list):
         time.sleep(1)
 except KeyboardInterrupt:
-    print(f"Quitting")
+    print("Quitting")
     for t in thread_list:
         t.stop = True
         quit()
