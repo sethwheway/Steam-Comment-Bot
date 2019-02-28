@@ -86,4 +86,4 @@ except KeyboardInterrupt:
     print("Quitting")
     for t in thread_list:
         t.stop = True
-        quit()
+    quit()
