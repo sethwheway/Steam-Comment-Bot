@@ -6,7 +6,7 @@ A quick Python 3.6+ script to post the contents of a text file onto one or multi
 ## Usage
 Change the variables `script_name`, `delay`, `session_id`, `login_secure` and `final_comment` 
 at the top of the file as you wish.
-A delay of at least 15 seconds is recommended though smaller delays may work for shorter text files.
+A delay of at least 20 seconds is recommended though smaller delays may work for shorter text files.
 The session id and login secure can be obtained from your browser cookies from a logged in Steam account. You can Google how to do that.
 The `final_comment` variable will be the last thing posted to the comment page. This must be under 1000 characters.
 
