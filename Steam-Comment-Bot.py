@@ -7,7 +7,7 @@ targets = sys.argv[1:]
 
 script_name = "beemovie.txt"
 final_comment = ""
-delay = 15
+delay = 20
 
 session_id = ""
 login_secure = ""
@@ -34,15 +34,12 @@ async def comment_task(target):
         resp = (await asks.post(f"https://steamcommunity.com/comment/Profile/post/{target}/-1/",
                                 headers=headers, cookies=cookies, data=data)).json()
 
-        if resp["success"] is not True:
-            if resp["success"] == "The settings on this account do not allow you to add comments.":
-                print(resp)
+        if resp.get("success", False) is not True:
+            if resp.get("success", False) == "The settings on this account do not allow you to add comments.":
                 print(f"Account {target} either doesn't allow posting or your entered information is incorrect")
                 print("Make sure all your entered info is correct and the delay is sufficient")
                 return
-
             else:
-                print(resp)
                 print(f"An error occured while commenting on {target}'s profile with error code: "
                       f"{resp.get('error', f'Unknown error')}")
                 print("Make sure all your entered info is correct and the delay is sufficient")
