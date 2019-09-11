@@ -6,7 +6,11 @@ import trio
 targets = sys.argv[1:]
 
 script_name = "beemovie.txt"
-final_comment = ""
+final_comment = "Bee Movie (2007) - 6.2/10\nhttp://www.imdb.com/title/tt0389790/\n\n\
+Barry B. Benson, a bee just graduated from college, is disillusioned at his lone career choice: \
+making honey. On a special trip outside the hive, Barry's life is saved by Vanessa, a florist in New York City. \
+As their relationship blossoms, he discovers humans actually eat honey, and subsequently decides to sue them"
+
 delay = 20
 
 session_id = ""
@@ -15,11 +19,13 @@ steam_id = login_secure[:login_secure.index("%")]
 
 pages = [""]
 with open(script_name, "r") as f:
-    for l in f.readlines():
-        if len(pages[-1]) + len(l) > 999:
-            pages.append(l)
+    for line in f.readlines():
+        if "<--! Split --!>" in line:
+            pages.append("")
+        elif len(pages[-1]) + len(line) > 999:
+            pages.append(line)
         else:
-            pages[-1] += l
+            pages[-1] += line
 
 pages.reverse()
 pages.append(final_comment) if final_comment else None
