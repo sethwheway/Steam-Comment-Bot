@@ -1,4 +1,4 @@
-# SteamCommentSpamBot
+# Steam-Comment-Bot
 
 A quick Python 3.6+ script to post the contents of a text file onto one or multiple Steam profiles.
 
@@ -15,7 +15,7 @@ The program will automatically split the script into chunks so no comment exceed
 You can manually cause a split by inserting `<--! Split !-->` as a seperate line
 
 To run the script, invoke it through a terminal with a list of Steam64 IDs separated with spaces.
-E.g. `SteamCommentSpamBot.py 76561199795927971 76561199100511319`
+E.g. `Steam-Comment-Bot.py 76561199795927971 76561199100511319`
 
 The script to the Bee Movie has been included with this repo and is used by default.
 
