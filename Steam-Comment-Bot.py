@@ -1,9 +1,14 @@
 import sys
+from time import sleep
 
-import asks
-import trio
+from colorama import Style, Fore
+from requests import post
+from tqdm import tqdm, trange
 
 targets = sys.argv[1:]
+if not targets:
+    print(Fore.RED + "No Steam IDs specified. Quitting")
+    quit()
 
 script_name = "beemovie.txt"
 final_comment = "Bee Movie (2007) - 6.2/10\nhttp://www.imdb.com/title/tt0389790/\n\n\
@@ -11,16 +16,15 @@ Barry B. Benson, a bee just graduated from college, is disillusioned at his lone
 making honey. On a special trip outside the hive, Barry's life is saved by Vanessa, a florist in New York City. \
 As their relationship blossoms, he discovers humans actually eat honey, and subsequently decides to sue them"
 
-delay = 20
+delay = 12
 
-session_id = ""
-login_secure = ""
-steam_id = login_secure[:login_secure.index("%")]
+session_id = "f0cfa4f5148b95f4f2037203"
+login_secure = "76561198100511318%7C%7C916F91E49B0E34AF68A5A41CF90CD0B01B1439EC"
 
 pages = [""]
 with open(script_name, "r") as f:
     for line in f.readlines():
-        if "<--! Split --!>" in line:
+        if "<--! Split !-->" in line:
             pages.append("")
         elif len(pages[-1]) + len(line) > 999:
             pages.append(line)
@@ -28,42 +32,35 @@ with open(script_name, "r") as f:
             pages[-1] += line
 
 pages.reverse()
-pages.append(final_comment) if final_comment else None
+if final_comment:
+    pages.append(final_comment)
 
+error = False
+for page in (page_bar := tqdm(pages)):
+    for target in targets:
+        # Don't ask me why the session ID is required twice. Steam's entire web infra sucks
+        data = {"comment": page, "sessionid": session_id, "feature2": -1}
+        cookies = {"sessionid": session_id, "steamLoginSecure": login_secure}
+        resp = post(f"https://steamcommunity.com/comment/Profile/post/{target}/-1", data=data, cookies=cookies)
 
-async def comment_task(target):
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:70.0) Gecko/20100101 Firefox/70.0"}
-    cookies = {"steamLoginSecure": login_secure, "sessionid": session_id}
+        if not (json := resp.json()).get("success") is True:
+            page_bar.write(Fore.RED + f"An error has occured with {target}! Skipping them from now on")
+            page_bar.write(str(json) + Style.RESET_ALL)
+            targets.remove(target)
+            error = True
+            continue
 
-    for i, p in enumerate(pages):
-        data = {"comment": p, "count": "6", "sessionid": session_id}
-        resp = (await asks.post(f"https://steamcommunity.com/comment/Profile/post/{target}/-1/",
-                                headers=headers, cookies=cookies, data=data)).json()
+    if not targets:
+        print(Fore.RED, end="")  # Hack to make the progress bar go red
+        page_bar.close()
+        print(Style.BRIGHT + "\nAll targets errored before all comments were posted!")
+        quit()
 
-        if resp.get("success", False) is not True:
-            if resp.get("success", False) == "The settings on this account do not allow you to add comments.":
-                print(f"Account {target} either doesn't allow posting or your entered information is incorrect")
-                print("Make sure all your entered info is correct and the delay is sufficient")
-                return
-            else:
-                print(f"An error occured while commenting on {target}'s profile with error code: "
-                      f"{resp.get('error', f'Unknown error')}")
-                print("Make sure all your entered info is correct and the delay is sufficient")
-                return
+    page_bar.update()
 
-        else:
-            print(f"{i + 1}/{len(pages)} on {target}'s profile")
+    if page_bar.n != len(pages):
+        bar_format = f"Comment {page_bar.n}/{len(pages)} successful. Delaying " + r"[{n_fmt}/{total_fmt}s]"
+        for _ in trange(delay, bar_format=bar_format, leave=False):
+            sleep(1)
 
-        await trio.sleep(delay)
-
-
-async def main():
-    print(f"Estimated time: {((len(pages) * delay) / 60):.1f} minutes")
-    async with trio.open_nursery() as n:
-        for t in targets:
-            n.start_soon(comment_task, t)
-
-    print("Finished")
-
-
-trio.run(main)
+print("\nDone" + (" with one or more errors along the way!" if error else "!"))
