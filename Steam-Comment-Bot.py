@@ -18,8 +18,8 @@ As their relationship blossoms, he discovers humans actually eat honey, and subs
 
 delay = 12
 
-session_id = "REPLACE_ME"
-login_secure = "REPLACE_ME"
+session_id = "REPLACE_ME"  # Should look something like f2cfa4f5148b95f4f2037203
+login_secure = "REPLACE_ME"  # Should look something like 78561198100511312%7C%7C916F91E49B0E34AF61A5A41CF90CD0B01B1439EC
 
 pages = [""]
 with open(script_name, "r") as f:
@@ -51,7 +51,7 @@ for page in (page_bar := tqdm(pages)):
             continue
 
     if not targets:
-        print(Fore.RED, end="")  # Hack to make the progress bar go red
+        print(Fore.RED, end="")  # Hack to make the bar red
         page_bar.close()
         print(Style.BRIGHT + "\nAll targets errored before all comments were posted!")
         quit()
