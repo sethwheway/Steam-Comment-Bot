@@ -18,8 +18,8 @@ As their relationship blossoms, he discovers humans actually eat honey, and subs
 
 delay = 12
 
-session_id = "f0cfa4f5148b95f4f2037203"
-login_secure = "76561198100511318%7C%7C916F91E49B0E34AF68A5A41CF90CD0B01B1439EC"
+session_id = "REPLACE_ME"
+login_secure = "REPLACE_ME"
 
 pages = [""]
 with open(script_name, "r") as f:
