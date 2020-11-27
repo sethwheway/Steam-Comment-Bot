@@ -61,6 +61,6 @@ for page in (page_bar := tqdm(pages)):
     if page_bar.n != len(pages):
         bar_format = f"Comment {page_bar.n}/{len(pages)} successful. Delaying " + r"[{n_fmt}/{total_fmt}s]"
         for _ in trange(delay, bar_format=bar_format, leave=False):
-            sleep(1)
+            sleep(delay)
 
 print("\nDone" + (" with one or more errors along the way!" if error else "!"))
