@@ -1,21 +1,20 @@
-# The list of steam ids to post to seperated by commas. SHould look like [123, 456, 789]
+# The list of steam ids to post to seperated by commas. Should look like [7856118500511312, 76561198001897827, 76561198293660577]
 targets = []
 
-# The name of the text file containing what you want commented
 script_name = "beemovie.txt"
 
 # The final comment to post on each profile. Can be empty
 final_comment = """
-Bee Movie (2007) - 6.3/10\nhttp://www.imdb.com/title/tt0389790/\n\n\
+Bee Movie (2007) - 6.1/10\nhttp://www.imdb.com/title/tt0389790/\n\n\
 Barry B. Benson, a bee just graduated from college, is disillusioned at his lone career choice: \
 making honey. On a special trip outside the hive, Barry's life is saved by Vanessa, a florist in New York City. \
 As their relationship blossoms, he discovers humans actually eat honey, and subsequently decides to sue them
 """
 
-# The delay to wait in between each comment in seconds. Increase this if you get ratelimited
+# The delay between each comment. Increase this if you get ratelimited
 delay = 12
 
-# One of the tokens you need to get from a browser. Should look something like "f2cfa4f5148b95f4f2037203"
+# One of the tokens you need to get from a browser. Should look something like f2cfa4f5148b95f4f2037203
 session_id = "REPLACE ME"
-# Another auth token. Should look something like "78561198500511312%7C%7C916F91E49B0E34AF61A5A41CF9D0B01B1439EC"
+# The other token you need to get. Should look something like 78561198500511312%7C%7C916F91E49B0E34AF61A5A41CF9D0B01B1439EC
 login_secure = "REPLACE ME"
