@@ -1,9 +1,6 @@
 # Steam-Comment-Bot
-***
 
 A Python 3.6+ script to post the contents of a text file onto one or multiple Steam profiles
-
-Running the source will require Python to be installed and for you to install the dependencies listed in requirements.txt.
 
 ## Usage
 Edit the `config.toml` file to configure the bot. Descriptions of what each configurable are in the file.  
